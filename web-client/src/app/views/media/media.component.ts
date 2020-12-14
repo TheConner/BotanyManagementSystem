@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { GALLERY_IMAGE, GALLERY_CONF } from 'ngx-image-gallery';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { Image } from 'src/app/model/Image.model';
+import { AuthService } from 'src/app/service/auth.service';
 import { BMSService } from 'src/app/service/bms.service';
+
+declare const lightGallery: any;
 
 @Component({
   selector: 'app-media',
@@ -9,30 +11,36 @@ import { BMSService } from 'src/app/service/bms.service';
   styleUrls: ['./media.component.css']
 })
 export class MediaComponent implements OnInit {
-  //public images: Image[];
-  images: GALLERY_IMAGE[]=[];
-  // gallery configuration
-  conf: GALLERY_CONF = {
-    imageOffset: '0px',
-    showDeleteControl: false,
-    showImageTitle: false,
-  };
-  constructor(private api: BMSService) { }
+  public images: Image[];
+  public ready: boolean;
+
+  @ViewChild('LightGallery', { static: false }) lgContainer: ElementRef;
+
+  constructor(private api: BMSService, private auth: AuthService) { }
 
   ngOnInit(): void {
+    this.ready=false;
     this.api.getAllImages()
-    .subscribe((images) => {
-      let tmp = []
-      images.forEach(i => {
-        tmp.push({
-          altText: 'woman-in-black-blazer-holding-blue-cup', 
-          title: 'woman-in-black-blazer-holding-blue-cup',
-          url: "/api/Image/" + i.id,
-          thumbnailUrl: "/api/Image/" + i.id + "?size=256"
-        });
-      });
-      this.images=this.images.concat(tmp);
-        console.log(this.images);
-    })
+    .subscribe((data) => {
+      // TODO: merge this map into an image helper
+      this.images = data;
+
+      this.initLightGallery();
+    });
   }
+
+  initLightGallery() {
+    setTimeout(() => {
+      this.ready=true;
+      console.log('--- After Init ---');
+      console.log(document.getElementById("GalleryContainer"));
+      lightGallery(document.getElementById("GalleryContainer"),{
+        thumbnail:true,
+        animateThumb: false,
+        showThumbByDefault: false
+      });
+    },2000)
+  }
+
+  
 }

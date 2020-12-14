@@ -10,7 +10,6 @@ import { Toast, ToastrModule } from 'ngx-toastr';
 import { ChartsModule } from 'ng2-charts';
 import { HotTableModule } from '@handsontable/angular';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import { NgxImageGalleryModule } from 'ngx-image-gallery';
 
 import { IndexComponent } from './views/index/index.component';
 import { EnvironmentComponent } from './views/environment/environment.component';
@@ -41,8 +40,7 @@ import { Router } from '@angular/router';
     HttpClientModule,
     ChartsModule,
     HotTableModule,
-    ReactiveFormsModule,
-    NgxImageGalleryModule
+    ReactiveFormsModule
   ],
   providers: [
     {

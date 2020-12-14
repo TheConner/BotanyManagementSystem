@@ -41,13 +41,13 @@ module.exports = async function (fastify, opts) {
         })
         .then((token) => {
             let expiry = new Date();
-            expiry.setMonth(expiry.getDate()+14);
+            expiry.setMonth(expiry.getDate()+2);
             fastify.pg.query('UPDATE users SET curr_token=$1, token_expiry=$2',[token,expiry]);
             return token;
         })
         .then((token) => {
             reply.send(token)
-        })
+        });
     })
 
     fastify.post(API_BASE + 'User', function (request, reply) {

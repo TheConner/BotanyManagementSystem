@@ -1,12 +1,28 @@
 <h1>Media</h1>
-<div *ngIf="images==null; then thenBlock else elseBlock"></div>
-<ng-template #thenBlock>
+<div *ngIf="images==null || !ready">
     <app-loading-spinner></app-loading-spinner>
-</ng-template>
-<ng-template #elseBlock>
-    <ngx-image-gallery 
-    [images]="images"
-    [conf]="conf"
-    ></ngx-image-gallery>
-        
-</ng-template>
+</div>
+
+<div class="container" [hidden]="!ready">
+    <div id="GalleryContainer" class="row">
+        <a *ngFor="let image of images"  href={{image.link}} class="col-sm-4">
+            <img src={{image.link}} class="img-thumbnail">
+        </a>
+    </div>
+</div>
+
+
+
+<!--
+<div class="container">
+    <div class="row">
+        <div id="GalleryContainer" class="col-md-12 mx-auto my-5">
+            <div class="col-sm" *ngFor="let image of images">
+                <a href={{image.link}} >
+                    <img src={{image.link}}>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+-->

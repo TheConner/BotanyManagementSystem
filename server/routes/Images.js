@@ -33,8 +33,11 @@ module.exports = async function (fastify, opts) {
     });
 
     fastify.get(API_BASE + 'Images', function(request, reply) {
-        fastify.pg.query(`SELECT id,filename FROM images ORDER BY ID DESC LIMIT 100`)
+        fastify.pg.query(`SELECT id,environment,uploaded_on FROM images ORDER BY ID DESC LIMIT 100`)
         .then((data) => {
+            for (let i in data.rows) {
+                data.rows[i]['link'] = API_BASE + 'Image/' + data.rows[i]['id']
+            }
             reply.send(data.rows)
         });
     })

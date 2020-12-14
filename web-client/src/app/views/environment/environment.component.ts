@@ -37,10 +37,7 @@ export class EnvironmentComponent implements OnInit {
 
     this.api.getImages(env)
     .subscribe((data) => {
-      this.images = data.map(i => {
-        i.link = i.link + "?token="+this.auth.getToken();
-        return i;
-      });
+      this.images = data;
     })
   }
 

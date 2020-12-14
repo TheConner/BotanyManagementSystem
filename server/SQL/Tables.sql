@@ -1,4 +1,7 @@
+--- TODO: I think this can be safely removed
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+--- Needed for pivot functions
 CREATE EXTENSION IF NOT EXISTS tablefunc;
 
 CREATE TABLE IF NOT EXISTS environments (

@@ -14,14 +14,14 @@ export class AuthService implements HttpInterceptor {
   constructor() { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const authReq = req.clone({headers: req.headers.set("Token", this.getToken())});
-    return next.handle(authReq).pipe(catchError(
-      x=>this.handleAuthError(x)
-    ));
+    return next.handle(authReq).pipe(catchError(x=>this.handleAuthError(x)));
   }
 
   public handleAuthError(err: HttpErrorResponse) : Observable<any> {
     console.log("Auth Error");
     window.location.href = '/login';
+
+    // Technically this will never be reached, but it must be here to appease typescript
     return of(err.message);
   }
 

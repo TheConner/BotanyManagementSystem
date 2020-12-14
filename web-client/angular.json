@@ -33,11 +33,15 @@
               "node_modules/font-awesome/scss/font-awesome.scss",
               "node_modules/angular-bootstrap-md/assets/scss/bootstrap/bootstrap.scss",
               "node_modules/angular-bootstrap-md/assets/scss/mdb.scss",
+              "node_modules/lightgallery.js/dist/css/lightgallery.min.css",
               "src/styles.scss"
             ],
             "scripts": [
               "node_modules/chart.js/dist/Chart.js",
-              "node_modules/hammerjs/hammer.min.js"
+              "node_modules/hammerjs/hammer.min.js",
+              "node_modules/lightgallery.js/dist/js/lightgallery.min.js",
+              "node_modules/lg-fullscreen/dist/lg-fullscreen.min.js",
+              "node_modules/lg-thumbnail/dist/lg-thumbnail.min.js"
             ]
           },
           "configurations": {

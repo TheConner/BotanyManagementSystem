@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, map, retry } from 'rxjs/operators';
 
 import { Environment } from '../model/environment.model';
 import { EnvironmentComponent } from '../views/environment/environment.component';
 import { Reading } from '../model/reading.model';
 import { Image } from '../model/Image.model';
 import { AuthService } from './auth.service';
+import { UrlResolver } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ import { AuthService } from './auth.service';
 export class BMSService {
   private ENDPOINT: String;
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private auth: AuthService) { 
     this.ENDPOINT = '/api/';
   }
 
@@ -53,10 +54,8 @@ export class BMSService {
             out += ',';
         } 
     }
-    return this.http.get(this.ENDPOINT + `Readings?sensors=${out}&AsTable=1&Count=${count}`)
+    return this.http.get(this.ENDPOINT + `Readings?sensors=${out}&AsTable=1&Count=${count}`);
   }
-
-
 
   /// Config stuff
   // Not using object modelling here, isn't needed
@@ -72,11 +71,25 @@ export class BMSService {
   }
 
   public getImages(EnvironmentID: Number): Observable<Image[]> {
-    return this.http.get<Image[]>(this.ENDPOINT + 'Images/Environment/' + EnvironmentID);
+    return this.http.get<Image[]>(this.ENDPOINT + 'Images/Environment/' + EnvironmentID)
+    .pipe(map(images => {
+      return this.parseImages(images);
+    }));
   }
 
   public getAllImages(): Observable<Image[]> {
-    return this.http.get<Image[]>(this.ENDPOINT + 'Images');
+    return this.http.get<Image[]>(this.ENDPOINT + 'Images')
+    .pipe(map(images => {
+      return this.parseImages(images);
+    }));
   }
 
+  private parseImages(images: Image[]): Image[] {
+    images = images.map(image => {
+      // TODO: make this less hacky
+      image.link = image.link + '?token=' + this.auth.getToken();
+      return image;
+    })
+    return images;
+  }
 }
