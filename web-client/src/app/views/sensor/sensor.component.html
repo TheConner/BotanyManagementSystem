@@ -1,5 +1,5 @@
 <h3>{{sensor.name}}</h3>
-<div *ngIf="reading==null; then thenBlock else elseBlock"></div>
+<div *ngIf="loading || reading==null; then thenBlock else elseBlock"></div>
 <ng-template #thenBlock>
     <app-loading-spinner></app-loading-spinner>
 </ng-template>

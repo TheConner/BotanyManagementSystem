@@ -26,12 +26,16 @@ export class SensorComponent implements OnInit {
     borderColor: 'black',
     backgroundColor: 'rgba(255,0,0,0.3)',
   };
+  public loading: boolean = true;
 
   constructor(private api: BMSService) { }
 
   ngOnInit(): void {
     this.readingCount=10;
     this.RefreshData();
+    setTimeout(() => {
+      this.loading = false;
+    }, 1000);
   }
 
   private RefreshData() {

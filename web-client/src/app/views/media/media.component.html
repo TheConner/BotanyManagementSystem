@@ -1,12 +1,17 @@
-<h1>Media</h1>
+<h1 *ngIf="environment == null">Media</h1>
+
+<div *ngIf="environment != null">
+    <p>Showing images for {{environment.name}}</p>
+</div>
+
 <div *ngIf="images==null || !ready">
     <app-loading-spinner></app-loading-spinner>
 </div>
 
 <div class="container" [hidden]="!ready">
     <div id="GalleryContainer" class="row">
-        <a *ngFor="let image of images"  href={{image.link}} class="col-sm-4">
-            <img src={{image.link}} class="img-thumbnail">
+        <a *ngFor="let image of images"  href={{image.link}} class="col-sm-4" data-sub-html={{this.generateCaption(image)}}>
+            <img src={{this.getThumbnailUrl(image,320)}} class="img-thumbnail">
         </a>
     </div>
 </div>

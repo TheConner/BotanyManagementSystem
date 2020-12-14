@@ -3,4 +3,5 @@ export class Image {
     public environment: Number;
     public uploaded_on: Date;
     public link: String;
+    public thumbnailSize: Number = 320;
 }

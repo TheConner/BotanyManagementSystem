@@ -84,10 +84,13 @@ export class BMSService {
     }));
   }
 
-  private parseImages(images: Image[]): Image[] {
+
+  // Helper for appending our token to the image URL
+  private parseImages(images: Image[]) : Image[] {
     images = images.map(image => {
-      // TODO: make this less hacky
-      image.link = image.link + '?token=' + this.auth.getToken();
+      let link = new URL(image.link.toString(), location.toString());
+      link.searchParams.append('token', this.auth.getToken());
+      image.link = link.toString();
       return image;
     })
     return images;

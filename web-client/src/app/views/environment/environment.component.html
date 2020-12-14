@@ -20,12 +20,15 @@
     <div *ngIf="images!=null && images.length > 0">
       <h2>Images</h2>
       <b *ngIf="images.length == 0">No images to display :(</b>
+      <app-media [environment]="environment"></app-media>
 
-      <mdb-carousel [animation]="'slide'">
+      <!-- 
+        <mdb-carousel [animation]="'slide'">
         <mdb-carousel-item *ngFor="let image of images" >
           <img class="d-block w-100" src="{{image.link}}">
         </mdb-carousel-item>
       </mdb-carousel>
+       -->
   </div>
     
 </ng-template>
