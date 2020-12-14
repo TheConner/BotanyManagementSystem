@@ -1,0 +1,35 @@
+<header>
+  <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <!-- Navbar brand -->
+    <mdb-navbar-brand>
+      <img src="/assets/plant-logo.svg" style="filter: invert(100%); -webkit-filter: invert(100%);" width="32" height="32" class="d-inline-block align-top" alt=""/>
+      <a class="navbar-brand" routerLink="/">BMS</a>
+    </mdb-navbar-brand>
+
+    <!-- Collapsible content -->
+    <links>
+
+        <!-- Links -->
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link waves-light" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" mdbWavesEffect>Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link waves-light" routerLink="/configuration" routerLinkActive="active" mdbWavesEffect>Configuration</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link waves-light" routerLink="/media" routerLinkActive="active" mdbWavesEffect>Media</a>
+            </li>
+        </ul>
+        <!-- Links -->
+    </links>
+    <!-- Collapsible content -->
+
+</mdb-navbar>
+<!--/.Navbar-->
+</header>
+
+<main role="main" class="container">
+  <router-outlet></router-outlet>
+</main>

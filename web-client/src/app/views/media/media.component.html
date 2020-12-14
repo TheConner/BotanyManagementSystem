@@ -1,0 +1,12 @@
+<h1>Media</h1>
+<div *ngIf="images==null; then thenBlock else elseBlock"></div>
+<ng-template #thenBlock>
+    <app-loading-spinner></app-loading-spinner>
+</ng-template>
+<ng-template #elseBlock>
+    <ngx-image-gallery 
+    [images]="images"
+    [conf]="conf"
+    ></ngx-image-gallery>
+        
+</ng-template>

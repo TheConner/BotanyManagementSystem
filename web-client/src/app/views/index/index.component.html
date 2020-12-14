@@ -1,0 +1,14 @@
+<h1>Botany Management System</h1>
+<p>Welcome to the botany management system, select an environment below to view its sensors</p>
+
+<div class="row">
+    <div class="col-sm-6" *ngFor="let env of environments">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{env.name}}</h5>
+          <p class="card-text">{{env.description}}</p>
+          <a routerLink="/environments/{{env.id}}" class="btn btn-primary">View</a>
+        </div>
+      </div>
+    </div>
+  </div>

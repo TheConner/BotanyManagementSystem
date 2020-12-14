@@ -1,0 +1,31 @@
+<div *ngIf="environment==null; then thenBlock else elseBlock"></div>
+<ng-template #thenBlock>
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>
+<ng-template #elseBlock>
+  <h1>Environment: {{environment.name}}</h1>
+  <h2>Data</h2>
+  <hot-table 
+    [rowHeaders]="true"
+    [settings]="settings" 
+    [data]="sensDataTable">
+  </hot-table>
+
+
+    <h2>Sensor Readings</h2>
+    <div *ngFor="let sensor of environment.sensors">
+        <app-sensor [sensor]=sensor></app-sensor>
+    </div>
+
+    <div *ngIf="images!=null && images.length > 0">
+      <h2>Images</h2>
+      <b *ngIf="images.length == 0">No images to display :(</b>
+
+      <mdb-carousel [animation]="'slide'">
+        <mdb-carousel-item *ngFor="let image of images" >
+          <img class="d-block w-100" src="{{image.link}}">
+        </mdb-carousel-item>
+      </mdb-carousel>
+  </div>
+    
+</ng-template>
