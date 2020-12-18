@@ -15,7 +15,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "exceljs": "^4.2.0",
     "fastify": "^3.0.0",
     "fastify-autoload": "^3.0.2",
     "fastify-cli": "^2.5.1",
@@ -24,7 +23,8 @@
     "fastify-postgres": "^3.3.0",
     "pg": "^8.5.1",
     "pg-format": "^1.0.4",
-    "sharp": "^0.26.3"
+    "sharp": "^0.26.3",
+    "xlsx": "^0.16.9"
   },
   "devDependencies": {
     "tap": "^14.0.0"

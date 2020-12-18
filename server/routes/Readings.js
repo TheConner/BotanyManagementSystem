@@ -1,5 +1,6 @@
 'use strict'
-const util = require('../util')
+const util = require('../util');
+const XLSX = require('xlsx');
 
 const API_BASE = '/api/'
 
@@ -18,6 +19,29 @@ function TableFormatter(rows, sensordata) {
         output.push(column);
     }
     return output;
+}
+
+function ExcelFormatter(rows, sensordata) {
+    let dateObj = new Date();
+    let month = dateObj.getUTCMonth() + 1; //months from 1-12
+    let day = dateObj.getUTCDate();
+    let year = dateObj.getUTCFullYear();
+
+    let wb = XLSX.utils.book_new();
+    wb.Props = {
+        Title: "Analytics Export",
+        Author: "BMS by Conner Bradley",
+        CreatedDate: new Date()
+    }
+
+    let data = TableFormatter(rows, sensordata);
+    let ws = XLSX.utils.json_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, sensordata.name);
+    return XLSX.write(wb, {
+        type: 'buffer',
+        bookType: 'xlsx',
+        compression: true
+    });
 }
 
 module.exports = async function (fastify, opts) {
@@ -39,8 +63,9 @@ module.exports = async function (fastify, opts) {
             let limit = parseInt(request.query['Count'])||100
             
             // Handle request
-            if (request.query['AsTable'] == 1) {
+            if (request.query['AsTable'] == 1 || request.query['AsExcel'] == 1) {
                 let promises = []
+                // TODO: make a stored procedure
                 promises.push(fastify.pg.query(
                     `WITH sensor_readings AS (
                         SELECT taken_on,sensor,value
@@ -59,7 +84,19 @@ module.exports = async function (fastify, opts) {
                 
                 Promise.all(promises)
                 .then((data) => {
-                    reply.send(TableFormatter(data[0].rows, data[1].rows))
+                    if (request.query['AsExcel'] == 1) {
+                        return ExcelFormatter(data[0].rows, data[1].rows);
+                    } else if (request.query['AsTable'] == 1) {
+                        return TableFormatter(data[0].rows, data[1].rows);
+                    }
+                    
+                })
+                .then((formattedData) => {
+                    if (request.query['AsExcel'] == 1) {
+                        reply.header('Content-Type','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet').send(formattedData)
+                    } else {
+                        reply.send(formattedData)
+                    }
                 })
             } else {
                 // Return default format
