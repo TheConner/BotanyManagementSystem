@@ -26,6 +26,8 @@ CREATE TABLE IF NOT EXISTS reading (
 	taken_on TIMESTAMP NOT NULL DEFAULT current_timestamp,
 	value TEXT NOT NULL
 );
+-- Pagination index
+CREATE INDEX IF NOT EXISTS r_idx ON reading USING btree (id);
 
 CREATE TABLE IF NOT EXISTS environment_tokens (
 	environment INTEGER NOT NULL REFERENCES environments ON DELETE CASCADE,
