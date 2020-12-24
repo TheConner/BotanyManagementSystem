@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import { Environment } from 'src/app/model/environment.model';
 import { Image } from 'src/app/model/Image.model';
@@ -6,6 +6,7 @@ import { Sensor } from 'src/app/model/sensor.model';
 import { BMSService } from 'src/app/service/bms.service';
 import { formatDate } from "@angular/common";
 import { AuthService } from 'src/app/service/auth.service';
+import { HotTableComponent } from '@handsontable/angular';
 
 
 @Component({
@@ -14,18 +15,25 @@ import { AuthService } from 'src/app/service/auth.service';
   styleUrls: ['./environment.component.css']
 })
 export class EnvironmentComponent implements OnInit {
+  @ViewChild("hot", { static: false }) hot: HotTableComponent;
   constructor(private route:ActivatedRoute, private api: BMSService, private auth: AuthService) { }
   public environment: Environment;
   public images: Image[];
   
-  public sensDataTable: any[];
-  public settings = {
+  public sensDataTable: any[] = [];
+  public settings: any = {
       licenseKey: 'non-commercial-and-evaluation',
       outsideClickDeselects: false,
-      multiColumnSorting:true,
       columns: [],
-      colHeaders: []
-  }
+      colHeaders: [],
+      columnSorting: {
+        initialConfig: {
+          column: 0,
+          sortOrder: 'desc'
+        }
+      }
+  };
+  public nextPage: Number = null;
 
   ngOnInit(): void {
     let env = parseInt(this.route.snapshot.paramMap.get('env'));
@@ -47,7 +55,14 @@ export class EnvironmentComponent implements OnInit {
     this.settings.columns = [
       {
         data: 'taken_on',
-        type: "text"
+        type: "text",
+        sortFunction: function(sortOrder) {
+          return function(a, b) {
+            let date_a = new Date(a);
+            let date_b = new Date(b);
+            return (date_a == date_b) ? 0 : (date_a < date_b) ? 1 : -1;
+          }
+        }
       }
     ];
 
@@ -64,10 +79,27 @@ export class EnvironmentComponent implements OnInit {
     // Fetch sensor reading data, as a table:
     this.api.getReadingsAsTable(sensorIds, 10)
     .subscribe((readingTable: any) => {
-      for (let i in readingTable) {
-        readingTable[i]['taken_on'] = formatDate(readingTable[i]['taken_on'],'medium','en-US');
+      this.nextPage = readingTable["pagination_prev_id"];
+      for (let i in readingTable.data) {
+        readingTable.data[i]['taken_on'] = formatDate(readingTable.data[i]['taken_on'],'medium','en-US');
+        this.sensDataTable.push(readingTable.data[i]);
       }
-      this.sensDataTable = readingTable;
+      this.hot.updateHotTable(this.settings);
+    });
+  }
+
+  LoadNextPage() {
+    console.log("Loading Next Page")
+    let sensorIds = this.environment.sensors.map(s => s.id);
+    // Fetch sensor reading data, as a table:
+    this.api.getReadingsAsTable(sensorIds, 10, this.nextPage)
+    .subscribe((readingTable: any) => {
+      this.nextPage = readingTable["pagination_prev_id"]
+      for (let i in readingTable.data) {
+        readingTable.data[i]['taken_on'] = formatDate(readingTable.data[i]['taken_on'],'medium','en-US');
+        this.sensDataTable.push(readingTable.data[i]);
+      }
+      this.hot.updateHotTable(this.settings);
     });
   }
 

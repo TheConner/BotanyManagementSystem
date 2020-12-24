@@ -5,11 +5,13 @@
 <ng-template #elseBlock>
   <h1>Environment: {{environment.name}}</h1>
   <h2>Data</h2>
+  <button class="btn btn-primary mb-2" (click)="LoadNextPage()">Load Moar</button>
   <hot-table 
     [rowHeaders]="true"
     [settings]="settings" 
-    [data]="sensDataTable">
+    [data]="sensDataTable" #hot>
   </hot-table>
+  
 
 
     <h2>Sensor Readings</h2>

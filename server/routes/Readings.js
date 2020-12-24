@@ -6,7 +6,13 @@ const API_BASE = '/api/'
 
 function TableFormatter(rows, sensordata) {
     let output = []
+    let largestID = undefined;
+    let smallestID = undefined;
     for (let row of rows) {
+        // Extract min / max
+        if (row['id_min'] < smallestID || smallestID == null) smallestID = row['id_min'];
+        if (row['id_max'] > largestID || largestID == null) largestID = row['id_max'];
+        
         let column = {}
         column['taken_on'] = row['taken_on']
 
@@ -18,7 +24,11 @@ function TableFormatter(rows, sensordata) {
 
         output.push(column);
     }
-    return output;
+    return {
+        data: output,
+        pagination_prev_id: smallestID,
+        pagination_next_id: largestID
+    };
 }
 
 function ExcelFormatter(rows, sensordata) {
@@ -37,6 +47,7 @@ function ExcelFormatter(rows, sensordata) {
     let data = TableFormatter(rows, sensordata);
     let ws = XLSX.utils.json_to_sheet(data);
     XLSX.utils.book_append_sheet(wb, ws, sensordata.name);
+    
     return XLSX.write(wb, {
         type: 'buffer',
         bookType: 'xlsx',
@@ -46,6 +57,7 @@ function ExcelFormatter(rows, sensordata) {
 
 module.exports = async function (fastify, opts) {
     /// Readings entity
+    // TODO: Make function less hairy
     fastify.get(API_BASE + 'Readings', function(request, reply) {
         // Get sensor query param - see if this is for one or many sensors
         if(request.query['sensors'] != null) {
@@ -61,25 +73,26 @@ module.exports = async function (fastify, opts) {
             let sensor_ids_str =  util.ToCommaSeperatedString(sensor_ids)
             if (sensor_ids_str.length==0) throw "No sensors to query";
             let limit = parseInt(request.query['Count'])||100
+            let page = parseInt(request.query['Page'])||0;
             
             // Handle request
             if (request.query['AsTable'] == 1 || request.query['AsExcel'] == 1) {
                 let promises = []
                 // TODO: make a stored procedure
                 promises.push(fastify.pg.query(
-                    `WITH sensor_readings AS (
-                        SELECT taken_on,sensor,value
-                          FROM reading
-                          WHERE SENSOR IN (${sensor_ids_str})
-                          ORDER BY taken_on
-                      )
-                      SELECT
-                        taken_on,
-                        jsonb_object_agg(sensor,value) AS reading_cols
-                      FROM sensor_readings
-                      GROUP BY taken_on
-                      ORDER BY taken_on
-                      LIMIT $1`,[limit]))
+                    `
+                    WITH sensor_readings AS (
+                        SELECT id,taken_on,sensor,value FROM get_reading_paginated(array[${sensor_ids_str}], $1, $2)
+                    )
+                    SELECT
+                    taken_on,
+                    jsonb_object_agg(sensor,value) AS reading_cols,
+                    max(id) AS id_max,
+                    min(id) AS id_min
+                    FROM sensor_readings
+                    GROUP BY taken_on
+                    ORDER BY taken_on`,[page, limit]));
+
                 promises.push(fastify.pg.query(`SELECT id,name FROM sensors WHERE id IN (${sensor_ids_str})`))
                 
                 Promise.all(promises)
@@ -101,11 +114,7 @@ module.exports = async function (fastify, opts) {
             } else {
                 // Return default format
                 fastify.pg.query(
-                    `SELECT id,sensor,taken_on,value
-                    FROM reading
-                    WHERE sensor IN (${sensor_ids_str})
-                    ORDER BY ID
-                    LIMIT $1`, [limit],
+                    `SELECT id,taken_on,sensor,value FROM get_reading_paginated(array[${sensor_ids_str}], $1, $2)`, [],
                     function onResult(err, result) {
                         reply.send(err||fastify.ReadingFormatter(result.rows))
                     }

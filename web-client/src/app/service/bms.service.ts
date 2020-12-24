@@ -46,7 +46,7 @@ export class BMSService {
     return this.http.get<Reading>(this.ENDPOINT + `Readings?sensors=${id}&Count=${count}`);
   }
 
-  public getReadingsAsTable(ids: Number[], count: Number) {
+  public getReadingsAsTable(ids: Number[], count: Number, page:Number = 0) {
     let out = '';
     for (let i = 0; i < ids.length; i++) {
         out += ids[i]
@@ -54,7 +54,7 @@ export class BMSService {
             out += ',';
         } 
     }
-    return this.http.get(this.ENDPOINT + `Readings?sensors=${out}&AsTable=1&Count=${count}`);
+    return this.http.get(this.ENDPOINT + `Readings?sensors=${out}&AsTable=1&Count=${count}&Page=${page}`);
   }
 
   /// Config stuff
