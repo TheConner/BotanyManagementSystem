@@ -4,6 +4,8 @@ const util = require('../util')
 const API_BASE = '/api/'
 const crypto = require('crypto')
 
+const User = require('../repository/User')
+
 function auth_genToken() {
     return new Promise((resolve, reject) => {
         crypto.randomBytes(256, function(err, buffer) {
@@ -60,19 +62,9 @@ module.exports = async function (fastify, opts) {
 
         // TODO check if all of the above crap is in the request
 
-        let salt = crypto.randomBytes(16).toString('hex');
-        let hash = crypto.pbkdf2Sync(password, salt, 1000, 64, `sha512`).toString(`hex`); 
-
 
         try {
-            fastify.pg.query(
-                `INSERT INTO users(username,email,first_name,last_name,password,salt)
-                VALUES ($1,$2,$3,$4,$5,$6)`,
-                [username, email, first_name, last_name, hash, salt],
-                function onResult(err,result) {
-                    reply.send(err||result)
-                }
-            )
+            User.Create(fastify.pg, username, email, first_name, last_name)
         } catch {
             reply.code(200).send("Server error")
         }

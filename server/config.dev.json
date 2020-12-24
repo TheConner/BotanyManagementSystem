@@ -1,0 +1,11 @@
+{
+    "DevUsers": [
+        {
+            "username": "netwinder",
+            "email": "email@email.ca",
+            "first_name": "Dummy",
+            "last_name": "User",
+            "password": "P@ssw0rd"
+        }
+    ]
+}

@@ -1,7 +1,10 @@
 'use strict'
 
-const path = require('path')
-const AutoLoad = require('fastify-autoload')
+const path = require('path');
+const AutoLoad = require('fastify-autoload');
+const Seed = require('./Seed');
+
+Seed();
 
 module.exports = async function (fastify, opts) {
   // Load in multipart plugin
