@@ -19,6 +19,7 @@ import { LoadingSpinnerComponent } from './views/loading-spinner/loading-spinner
 import { MediaComponent } from './views/media/media.component';
 import { AuthService } from './service/auth.service';
 import { Router } from '@angular/router';
+import { ReadingTableComponent } from './views/reading-table/reading-table.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { Router } from '@angular/router';
     SensorComponent,
     ConfigurationComponent,
     LoadingSpinnerComponent,
-    MediaComponent
+    MediaComponent,
+    ReadingTableComponent
   ],
   imports: [
     CommonModule,

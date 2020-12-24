@@ -73,8 +73,5 @@ export class MediaComponent implements OnInit {
     } else {
       return `<h4>Environment ID: ${image.environment.toString()}</h4><p>${image.uploaded_on.toString()}`
     }
-
-  }
-
-  
+  }  
 }

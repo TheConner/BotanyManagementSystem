@@ -114,7 +114,7 @@ module.exports = async function (fastify, opts) {
             } else {
                 // Return default format
                 fastify.pg.query(
-                    `SELECT id,taken_on,sensor,value FROM get_reading_paginated(array[${sensor_ids_str}], $1, $2)`, [],
+                    `SELECT id,taken_on,sensor,value FROM get_reading_paginated(array[${sensor_ids_str}], $1, $2)`, [page, limit],
                     function onResult(err, result) {
                         reply.send(err||fastify.ReadingFormatter(result.rows))
                     }
