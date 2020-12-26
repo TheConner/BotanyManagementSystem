@@ -30,6 +30,6 @@ export class EnvironmentComponent implements OnInit {
     this.api.getImages(env)
     .subscribe((data) => {
       this.images = data;
-    })
+    });
   }
 }

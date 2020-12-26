@@ -3,7 +3,26 @@
   <app-loading-spinner></app-loading-spinner>
 </ng-template>
 <ng-template #elseBlock>
-  <h1>Environment: {{environment.name}}</h1>
+  <div class="jumbotron jumbotron-fluid mt-4">
+    <div class="container">
+      <h1 class="display-4">Environment: {{environment.name}}</h1>
+      <p class="lead">{{environment.description}}</p>
+    </div>
+  </div>
+
+  <!-- Tab container -->
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active">Active</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link">Link</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link">Link</a>
+    </li>
+  </ul>
+
     <app-reading-table [environment]=environment></app-reading-table>
     <h2>Sensor Readings</h2>
     <div *ngFor="let sensor of environment.sensors">

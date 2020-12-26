@@ -35,7 +35,7 @@ export class SensorComponent implements OnInit {
     this.RefreshData();
     setTimeout(() => {
       this.loading = false;
-    }, 1000);
+    }, 500);
   }
 
   private RefreshData() {

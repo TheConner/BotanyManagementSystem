@@ -8,6 +8,14 @@
     <app-loading-spinner></app-loading-spinner>
 </div>
 
+<!-- If we have no images-->
+<div *ngIf="ready && images.length == 0">
+    <div class="alert alert-warning" role="alert">
+        <h3>Error</h3>
+        <p><b>No images found</b>, check back later for more!</p>
+    </div>
+</div>
+
 <div class="container" [hidden]="!ready">
     <div id="GalleryContainer" class="row">
         <a *ngFor="let image of images"  href={{image.link}} class="col-sm-4" data-sub-html={{this.generateCaption(image)}}>
@@ -15,6 +23,8 @@
         </a>
     </div>
 </div>
+
+
 
 
 
