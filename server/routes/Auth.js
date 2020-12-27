@@ -3,7 +3,6 @@ const util = require('../util')
 
 const API_BASE = '/api/'
 const crypto = require('crypto')
-
 const User = require('../repository/User')
 
 function auth_genToken() {
@@ -22,15 +21,17 @@ module.exports = async function (fastify, opts) {
         // Request body has to have username and password
         let username = request.body['username'];
         let password = request.body['password'];
-        fastify.pg.query(
+        /*fastify.pg.query(
             'SELECT id,password,salt FROM users WHERE username=$1',
             [username]
-        )
+        )*/
+        User.Read({username: username}, ['id','password','salt'])
         .then((data) => {
-            if (data.rows[0] != null && data.rows[0]['id'] != null) {
+            data = data[0];
+            if (data != null && data['id'] != null) {
                 // Validate 
-                let hash = data.rows[0]['password'];
-                let salt = data.rows[0]['salt'];
+                let hash = data['password'];
+                let salt = data['salt'];
                 let validate_hash = crypto.pbkdf2Sync(password, salt, 1000, 64, `sha512`).toString(`hex`);
                 if (validate_hash === hash) {
                     return auth_genToken();
@@ -44,11 +45,16 @@ module.exports = async function (fastify, opts) {
         .then((token) => {
             let expiry = new Date();
             expiry.setMonth(expiry.getDate()+2);
-            fastify.pg.query('UPDATE users SET curr_token=$1, token_expiry=$2',[token,expiry]);
-            return token;
+            //fastify.pg.query('UPDATE users SET curr_token=$1, token_expiry=$2',[token,expiry]);
+            return User.Update({username: username}, {
+                curr_token: token,
+                token_expiry: expiry,
+                last_login: new Date()
+            });
+            //return token;
         })
         .then((token) => {
-            reply.send(token)
+            console.log(token)
         });
     })
 
