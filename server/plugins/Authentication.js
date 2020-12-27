@@ -1,6 +1,7 @@
 'use strict'
 
 const fp = require('fastify-plugin');
+const UserRepository = new (require('../repository/User'))();
 
 // 
 const WHITELIST = [
@@ -23,15 +24,15 @@ module.exports = fp(async function (fastify, opts) {
             console.log("WHITELIST PATH - skip auth check")
             done();
         } else {
-            // Otherwise we will verify the token
+            // Otherwise we will verify the token, which will be in the header or query string
             let token = request.headers["token"]||request.query["token"];
-            if (token == null) reply.status(401).send()
+            if (token == null) reply.status(401).send();
             else {
                 // A token exists, we can validate it
-                fastify.pg.query(
-                    'SELECT token_expiry FROM users WHERE curr_token=$1',[token]
-                ).then((data) => {
-                    if (data.rows != null && data.rows[0] != null && IsExpired(data.rows[0]['token_expiry'])) {
+                UserRepository.Read({curr_token: token}, ['token_expiry'])
+                .then((data) => {
+                    data = data[0];
+                    if (data != null && IsExpired(data['token_expiry'])) {
                         done()
                     } else {
                         reply.status(401).send();

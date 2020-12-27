@@ -3,7 +3,7 @@ const util = require('../util')
 
 const API_BASE = '/api/'
 const crypto = require('crypto')
-const User = require('../repository/User')
+const UserRepository = new (require('../repository/User'))();
 
 function auth_genToken() {
     return new Promise((resolve, reject) => {
@@ -25,7 +25,8 @@ module.exports = async function (fastify, opts) {
             'SELECT id,password,salt FROM users WHERE username=$1',
             [username]
         )*/
-        User.Read({username: username}, ['id','password','salt'])
+        let response_token = "";
+        UserRepository.Read({username: username}, ['id','password','salt'])
         .then((data) => {
             data = data[0];
             if (data != null && data['id'] != null) {
@@ -43,18 +44,22 @@ module.exports = async function (fastify, opts) {
             }
         })
         .then((token) => {
+            response_token = token;
             let expiry = new Date();
             expiry.setMonth(expiry.getDate()+2);
             //fastify.pg.query('UPDATE users SET curr_token=$1, token_expiry=$2',[token,expiry]);
-            return User.Update({username: username}, {
+            return UserRepository.Update({username: username}, {
                 curr_token: token,
                 token_expiry: expiry,
                 last_login: new Date()
             });
-            //return token;
         })
-        .then((token) => {
-            console.log(token)
+        .then((UpdateResult) => {
+            if (UpdateResult == 1) {
+                reply.send(response_token);
+            } else {
+                reply.code(500).send("Server error while updating token");
+            }
         });
     })
 
@@ -70,7 +75,7 @@ module.exports = async function (fastify, opts) {
 
 
         try {
-            User.Create(fastify.pg, username, email, first_name, last_name)
+            User.Create(fastify.pg, username, email, first_name, last_name, password)
         } catch {
             reply.code(200).send("Server error")
         }

@@ -1,10 +1,12 @@
 const crypto = require('crypto');
 const knex = require('./knex');
+const RepositoryBase = require('./RepositoryBase');
+
 
 /// Creates a user
 function Create(pg, username, email, first_name, last_name, password) {
-    let salt = crypto.randomBytes(16).toString('hex');
-    let hash = crypto.pbkdf2Sync(password, salt, 1000, 64, `sha512`).toString(`hex`); 
+    
+    
 
     return pg.query(
         `INSERT INTO users(username,email,first_name,last_name,password,salt)
@@ -18,14 +20,23 @@ function Read(criteria, columns) {
 }
 
 function Update(criteria, update) {
-    //console.log(knex('users').where(criteria).update(update).toSQL().toNative())
     return knex('users').where(criteria).update(update);
 }
 
+class UserRepository extends RepositoryBase {
+    constructor() {
+        super('users')
+    }
 
-
-module.exports = {
-    Create: Create,
-    Read: Read,
-    Update: Update
+    Create(user) {
+        let salt = crypto.randomBytes(16).toString('hex');
+        let hash = crypto.pbkdf2Sync(user.password, salt, 1000, 64, `sha512`).toString(`hex`); 
+        user.salt = salt;
+        user.password = hash;
+        return knex(this.entity).insert(user)
+    }
 }
+
+
+
+module.exports = UserRepository;
