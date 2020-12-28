@@ -19,7 +19,8 @@ export class ConfigurationComponent implements OnInit {
       licenseKey: 'non-commercial-and-evaluation',
       fillHandle: false,
       outsideClickDeselects: false,
-      disableVisualSelection: true
+      disableVisualSelection: true,
+      darkMode: true
   }
   private envTable = "environments";
   private sensTable = "sensors";

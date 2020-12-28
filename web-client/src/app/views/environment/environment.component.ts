@@ -19,8 +19,11 @@ export class EnvironmentComponent implements OnInit {
   constructor(private route:ActivatedRoute, private api: BMSService, private auth: AuthService) { }
   public environment: Environment;
   public images: Image[];
+  public CurrentTab: string;
+  public Tabs: string[] = ["Graphs", "Data", "Media", "Notes"];
 
   ngOnInit(): void {
+    this.CurrentTab = this.Tabs[0];
     let env = parseInt(this.route.snapshot.paramMap.get('env'));
     this.api.getEnvironment(env)
     .subscribe((data: Environment)=> {
@@ -31,5 +34,9 @@ export class EnvironmentComponent implements OnInit {
     .subscribe((data) => {
       this.images = data;
     });
+  }
+
+  SetTab(newTab: string) {
+    this.CurrentTab = newTab;
   }
 }

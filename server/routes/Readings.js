@@ -2,7 +2,9 @@
 const util = require('../util');
 const XLSX = require('xlsx');
 
-const API_BASE = '/api/'
+const API_BASE = '/api/';
+const ReadingRepository = new (require('../repository/Reading'))();
+const SensorRepository = new (require('../repository/Sensor'))();
 
 function TableFormatter(rows, sensordata) {
     let output = []
@@ -58,7 +60,7 @@ function ExcelFormatter(rows, sensordata) {
 module.exports = async function (fastify, opts) {
     /// Readings entity
     // TODO: Make function less hairy
-    fastify.get(API_BASE + 'Readings', function(request, reply) {
+    fastify.get(API_BASE + 'Readings', async function(request, reply) {
         // Get sensor query param - see if this is for one or many sensors
         if(request.query['sensors'] != null) {
             // Multiple sensors, schema is as follows:
@@ -74,8 +76,14 @@ module.exports = async function (fastify, opts) {
             if (sensor_ids_str.length==0) throw "No sensors to query";
             let limit = parseInt(request.query['Count'])||100
             let page = parseInt(request.query['Page'])||0;
+
+            let criteria = {
+                sensors: sensor_ids,
+                page: page,
+                limit: limit
+            }
             
-            // Handle request
+            // If we want tabulated or a sheet of data, we have to massage it a bit
             if (request.query['AsTable'] == 1 || request.query['AsExcel'] == 1) {
                 let promises = []
                 // TODO: make a stored procedure
@@ -112,13 +120,8 @@ module.exports = async function (fastify, opts) {
                     }
                 })
             } else {
-                // Return default format
-                fastify.pg.query(
-                    `SELECT id,taken_on,sensor,value FROM get_reading_paginated(array[${sensor_ids_str}], $1, $2)`, [page, limit],
-                    function onResult(err, result) {
-                        reply.send(err||fastify.ReadingFormatter(result.rows))
-                    }
-                )
+                let res = await ReadingRepository.Read(criteria, []);
+                return fastify.ReadingFormatter(res.rows);
             }
 
         } else {
