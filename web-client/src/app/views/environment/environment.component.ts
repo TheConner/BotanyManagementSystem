@@ -6,7 +6,6 @@ import { Sensor } from 'src/app/model/sensor.model';
 import { BMSService } from 'src/app/service/bms.service';
 import { formatDate } from "@angular/common";
 import { AuthService } from 'src/app/service/auth.service';
-import { HotTableComponent } from '@handsontable/angular';
 
 
 @Component({
@@ -15,7 +14,6 @@ import { HotTableComponent } from '@handsontable/angular';
   styleUrls: ['./environment.component.css']
 })
 export class EnvironmentComponent implements OnInit {
-  @ViewChild("hot", { static: false }) hot: HotTableComponent;
   constructor(private route:ActivatedRoute, private api: BMSService, private auth: AuthService) { }
   public environment: Environment;
   public images: Image[];

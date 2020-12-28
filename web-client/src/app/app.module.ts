@@ -8,7 +8,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Toast, ToastrModule } from 'ngx-toastr';
 import { ChartsModule } from 'ng2-charts';
-import { HotTableModule } from '@handsontable/angular';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 import { IndexComponent } from './views/index/index.component';
@@ -45,7 +44,6 @@ import { ProfileComponent } from './views/profile/profile.component';
     ToastrModule.forRoot(),
     HttpClientModule,
     ChartsModule,
-    HotTableModule,
     ReactiveFormsModule
   ],
   providers: [

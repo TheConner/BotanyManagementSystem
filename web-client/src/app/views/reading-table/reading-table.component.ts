@@ -5,7 +5,6 @@ import { Image } from 'src/app/model/Image.model';
 import { Sensor } from 'src/app/model/sensor.model';
 import { formatDate } from "@angular/common";
 import { BMSService } from 'src/app/service/bms.service';
-import { HotTableComponent } from '@handsontable/angular';
 
 
 @Component({

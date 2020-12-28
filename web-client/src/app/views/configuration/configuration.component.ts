@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { BMSService } from 'src/app/service/bms.service';
-import * as Handsontable from 'handsontable';
-import { HotTableRegisterer } from '@handsontable/angular';
 import { ToastrService } from 'ngx-toastr';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -12,16 +10,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
   styleUrls: ['./configuration.component.css']
 })
 export class ConfigurationComponent implements OnInit {
-  private hotRegisterer = new HotTableRegisterer();
   public envData: any[];
   public sensData: any[];
-  public settings = {
-      licenseKey: 'non-commercial-and-evaluation',
-      fillHandle: false,
-      outsideClickDeselects: false,
-      disableVisualSelection: true,
-      darkMode: true
-  }
   private envTable = "environments";
   private sensTable = "sensors";
 
@@ -91,7 +81,7 @@ export class ConfigurationComponent implements OnInit {
   }
 
   public delEnv() {
-    let selected = this.hotRegisterer.getInstance('envTable').getSelected();
+/*    let selected;
 
     if (selected == null) {
       this.toastr.warning("To delete a record, select any cell in the row of that record then click delete");
@@ -104,7 +94,7 @@ export class ConfigurationComponent implements OnInit {
         console.log(d);
         this.refreshConfig();
       })
-    }
+    }*/
 
   }
 
