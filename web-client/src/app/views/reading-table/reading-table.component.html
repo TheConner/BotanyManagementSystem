@@ -1,7 +1,20 @@
 <h2>Data</h2>
-<button class="btn btn-primary mb-2" (click)="LoadNextPage()">Load Moar</button>
-<hot-table 
-[rowHeaders]="true"
-[settings]="settings" 
-[data]="sensDataTable" #hot>
-</hot-table>
+<table mdbTable>
+    <thead>
+      <tr>
+        <th *ngFor="let head of settings.colHeaders" scope="col">{{head}} </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr mdbTableCol *ngFor="let el of sensDataTable">
+        <ng-container *ngFor="let rowConfig of settings.columns">
+            <ng-container *ngIf="rowConfig.th">
+                <th scope="row">{{el[rowConfig.data]}}</th>
+            </ng-container>
+            <ng-container *ngIf="!rowConfig.th">
+                <td>{{el[rowConfig.data]}}</td>
+            </ng-container>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>

@@ -15,11 +15,9 @@ import { HotTableComponent } from '@handsontable/angular';
 })
 export class ReadingTableComponent implements OnInit {
   @Input('environment') environment: Environment; 
-  @ViewChild("hot", { static: false }) hot: HotTableComponent;
-
+  
   public sensDataTable: any[] = [];
   public settings: any = {
-      licenseKey: 'non-commercial-and-evaluation',
       outsideClickDeselects: false,
       columns: [],
       colHeaders: [],
@@ -42,6 +40,7 @@ export class ReadingTableComponent implements OnInit {
     this.settings.columns = [
       {
         data: 'taken_on',
+        th: true,
         type: "text",
         sortFunction: function(sortOrder) {
           return function(a, b) {
@@ -71,7 +70,7 @@ export class ReadingTableComponent implements OnInit {
         readingTable.data[i]['taken_on'] = formatDate(readingTable.data[i]['taken_on'],'medium','en-US');
         this.sensDataTable.push(readingTable.data[i]);
       }
-      this.hot.updateHotTable(this.settings);
+      console.log(this.sensDataTable)
     });
   }
 
@@ -86,7 +85,6 @@ export class ReadingTableComponent implements OnInit {
         readingTable.data[i]['taken_on'] = formatDate(readingTable.data[i]['taken_on'],'medium','en-US');
         this.sensDataTable.push(readingTable.data[i]);
       }
-      this.hot.updateHotTable(this.settings);
     });
   }
 
