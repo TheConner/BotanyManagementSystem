@@ -26,27 +26,33 @@
           <app-sensor [sensor]=sensor></app-sensor>
       </div>
     </div>
+
     <div class="tab-pane fade {{CurrentTab == 'Data' ? 'show active' : ''}}" role="tabpanel" aria-labelledby="Data-tab">
       <app-reading-table [environment]=environment></app-reading-table>
     </div>
-  </div>
 
+    <div class="tab-pane fade {{CurrentTab == 'Media' ? 'show active' : ''}}" role="tabpanel" aria-labelledby="Media-tab">
+      <div *ngIf="images!=null && images.length > 0">
+        <h3>Images</h3>
+        <b *ngIf="images.length == 0">No images to display :(</b>
+        <app-media [environment]="environment"></app-media>
+  
+        <!-- 
+          <mdb-carousel [animation]="'slide'">
+          <mdb-carousel-item *ngFor="let image of images" >
+            <img class="d-block w-100" src="{{image.link}}">
+          </mdb-carousel-item>
+        </mdb-carousel>
+         -->
+      </div>
+    </div>
 
-    
-    
+    <div class="tab-pane fade {{CurrentTab == 'Notes' ? 'show active' : ''}}" role="tabpanel" aria-labelledby="Notes-tab">
+      <h3>Notes</h3>
+      <p>TODO: make this do things</p>
+      
+    </div>
 
-    <div *ngIf="images!=null && images.length > 0">
-      <h2>Images</h2>
-      <b *ngIf="images.length == 0">No images to display :(</b>
-      <app-media [environment]="environment"></app-media>
-
-      <!-- 
-        <mdb-carousel [animation]="'slide'">
-        <mdb-carousel-item *ngFor="let image of images" >
-          <img class="d-block w-100" src="{{image.link}}">
-        </mdb-carousel-item>
-      </mdb-carousel>
-       -->
   </div>
     
 </ng-template>

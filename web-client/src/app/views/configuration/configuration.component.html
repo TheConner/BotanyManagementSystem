@@ -9,14 +9,26 @@
     <button class="btn btn-secondary" (click)="delEnv()">Delete</button>
 </div>
 
-<hot-table 
-    [settings]="settings" 
-    [data]="envData"
-    [hotId]="'envTable'">
-    <hot-column data="id" [readOnly]="true" title="ID"></hot-column>
-    <hot-column data="name" title="Name"></hot-column>
-    <hot-column data="description" title="Description"></hot-column>
-</hot-table>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let e of envData">
+      <th scope="row">{{e.id}}</th>
+      <td>{{e.name}}</td>
+      <td>{{e.description}}</td>
+      <td><button class="btn btn-outline-warning">Edit</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 
 
 
@@ -28,17 +40,32 @@
     <button class="btn btn-secondary" (click)="saveSens()">Delete</button>
 </div>
 
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Data Type</th>
+      <th scope="col">Data Type Name</th>
+      <th scope="col">Assosciated Environment</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let e of sensData">
+      <th scope="row">{{e.id}}</th>
+      <td>{{e.name}}</td>
+      <td>{{e.description}}</td>
+      <td>{{e.data_type}}</td>
+      <td>{{e.data_type_name}}</td>
+      <td>{{e.environment}}</td>
+      <td><button class="btn btn-outline-warning">Edit</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-<hot-table 
-    [settings]="settings" 
-    [data]="sensData">
-    <hot-column data="id" [readOnly]="true" title="ID"></hot-column>
-    <hot-column data="name" title="Name"></hot-column>
-    <hot-column data="description" title="Description"></hot-column>
-    <hot-column data="data_type" title="Data Type"></hot-column>
-    <hot-column data="data_type_name" title="Data Type Name"></hot-column>
-    <hot-column data="environment" title="Environment ID"></hot-column>
-</hot-table>
 
 
 
