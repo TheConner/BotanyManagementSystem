@@ -1,44 +1,5 @@
 <header>
-  <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark bg-dark">
-
-    <!-- Navbar brand -->
-    <mdb-navbar-brand>
-      <img src="/assets/plant-logo.svg" style="filter: invert(100%); -webkit-filter: invert(100%);" width="32" height="32" class="d-inline-block align-top" alt=""/>
-      <a class="navbar-brand" routerLink="/">BMS</a>
-    </mdb-navbar-brand>
-
-    <!-- Collapsible content -->
-    <links>
-
-        <!-- Links -->
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link waves-light" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" mdbWavesEffect>Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link waves-light" routerLink="/configuration" routerLinkActive="active" mdbWavesEffect>Configuration</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link waves-light" routerLink="/media" routerLinkActive="active" mdbWavesEffect>Media</a>
-            </li>
-        </ul>
-        <!-- Links -->
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown btn-group" dropdown>
-            <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
-              <img src="assets/account_circle-24px.svg" style="filter: invert(100%); -webkit-filter: invert(100%);" class="d-inline-block align-top" alt=""/> 
-              Profile<span class="caret"></span></a>
-            <div class="dropdown-menu dropdown-primary dropdown-menu-right" role="menu">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
-        </ul>
-    </links>
-    
-</mdb-navbar>
-<!--/.Navbar-->
+  <app-nav></app-nav>
 </header>
 
 <main role="main" class="container">

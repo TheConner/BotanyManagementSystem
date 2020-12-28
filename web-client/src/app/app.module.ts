@@ -20,6 +20,8 @@ import { MediaComponent } from './views/media/media.component';
 import { AuthService } from './service/auth.service';
 import { Router } from '@angular/router';
 import { ReadingTableComponent } from './views/reading-table/reading-table.component';
+import { NavComponent } from './views/nav/nav.component';
+import { ProfileComponent } from './views/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { ReadingTableComponent } from './views/reading-table/reading-table.compo
     ConfigurationComponent,
     LoadingSpinnerComponent,
     MediaComponent,
-    ReadingTableComponent
+    ReadingTableComponent,
+    NavComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,

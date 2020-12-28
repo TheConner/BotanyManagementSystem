@@ -84,6 +84,10 @@ export class BMSService {
     }));
   }
 
+  public getUser(): Observable<any> {
+    return this.http.get<any>(this.ENDPOINT + 'users/session')
+  }
+
 
   // Helper for appending our token to the image URL
   private parseImages(images: Image[]) : Image[] {

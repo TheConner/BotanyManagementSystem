@@ -1,5 +1,6 @@
 const knex = require('./knex');
 
+
 /**
  * Our generic repository superclass, just a knex wrapper for CRUD
  */
@@ -22,6 +23,10 @@ class RepositoryBase {
 
     Update(criteria, newObj) {
         return knex(this.entity).where(criteria).update(newObj);
+    }
+
+    Delete(criteria) {
+        return knex(this.entity).where(criteria).del();
     }
 }
 
