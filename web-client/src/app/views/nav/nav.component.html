@@ -24,17 +24,17 @@
       </ul>
       <!-- Links -->
       <ul class="navbar-nav ml-auto">
-        <li *ngIf="user != null" class="nav-item dropdown btn-group bg-dark" dropdown>
+        <li *ngIf="user != null" class="nav-item dropdown btn-group " dropdown>
           <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
             <img src="assets/account_circle-24px.svg" style="filter: invert(100%); -webkit-filter: invert(100%);" class="d-inline-block align-top" alt=""/> 
             {{user.first_name}} <span class="caret"></span>
           </a>
-          <div class="dropdown-menu dropdown-primary dropdown-menu-right bg-dark" role="menu">
-            <a *ngIf="CurrentMode == ''" class="dropdown-item nav-link bg-dark" (click)="SetMode('darkly')">Dark Mode</a>
-            <a *ngIf="CurrentMode == 'darkly'" class="dropdown-item nav-link bg-dark" (click)="SetMode('')">Light Mode</a>
-            <a class="dropdown-item nav-link bg-dark" routerLink="/profile">Profile</a>
-            <a class="dropdown-item nav-link bg-dark">Settings</a>
-            <a class="dropdown-item nav-link bg-dark">Logout</a>
+          <div class="dropdown-menu dropdown-primary dropdown-menu-right bg-light" role="menu">
+            <a *ngIf="CurrentMode == MODE_LIGHT" class="dropdown-item" (click)="SetMode(MODE_DARK)">Dark Mode</a>
+            <a *ngIf="CurrentMode == MODE_DARK" class="dropdown-item" (click)="SetMode(MODE_LIGHT)">Light Mode</a>
+            <a class="dropdown-item" routerLink="/profile">Profile</a>
+            <a class="dropdown-item">Settings</a>
+            <a class="dropdown-item">Logout</a>
           </div>
         </li>
       </ul>

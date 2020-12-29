@@ -88,6 +88,10 @@ export class BMSService {
     return this.http.get<any>(this.ENDPOINT + 'users/session')
   }
 
+  public updateUser(updatedUser): Observable<any> {
+    return this.http.patch<any>(this.ENDPOINT + 'users', updatedUser);
+  }
+
 
   // Helper for appending our token to the image URL
   private parseImages(images: Image[]) : Image[] {

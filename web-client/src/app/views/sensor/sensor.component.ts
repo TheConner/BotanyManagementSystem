@@ -37,6 +37,19 @@ export class SensorComponent implements OnInit {
       this.loading = false;
     }, 500);
   }
+  
+  private hexToRGB(hex, alpha) {
+    var r = parseInt(hex.slice(1, 3), 16),
+        g = parseInt(hex.slice(3, 5), 16),
+        b = parseInt(hex.slice(5, 7), 16);
+
+    if (alpha) {
+        return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+    } else {
+        return "rgb(" + r + ", " + g + ", " + b + ")";
+    }
+}
+
 
   private RefreshData() {
     this.api.getReading(this.sensor.id, this.readingCount)
@@ -44,7 +57,14 @@ export class SensorComponent implements OnInit {
       this.reading = data[this.sensor.id.toString()];
       this.lineChartData = [];
       this.lineChartLabels = [];
-      this.lineChartColors.push(this.defaultLineColor);
+      if (this.sensor.ui_color == null) {
+        this.lineChartColors.push(this.defaultLineColor);
+      } else {
+        this.lineChartColors.push({
+          borderColor: this.defaultLineColor.borderColor,
+          backgroundColor: this.hexToRGB(this.sensor.ui_color, "0.3")
+        });
+      }
 
       this.lineChartData.push({
         data: this.reading.value,

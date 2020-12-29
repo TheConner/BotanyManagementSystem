@@ -18,11 +18,13 @@ export class AuthService implements HttpInterceptor {
   }
 
   public handleAuthError(err: HttpErrorResponse) : Observable<any> {
-    console.log("Auth Error");
-    window.location.href = '/login';
-
-    // Technically this will never be reached, but it must be here to appease typescript
-    return of(err.message);
+    if (err.status === 401) {
+      console.log("Auth Error");
+      window.location.href = '/login';
+      return of(err);
+    } else {
+      throw err;
+    }
   }
 
   public isAuthenticated():boolean {

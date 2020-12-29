@@ -5,4 +5,5 @@ export class Sensor {
     public name: String;
     public description: String;
     public environment: Environment;
+    public ui_color: String;
 }

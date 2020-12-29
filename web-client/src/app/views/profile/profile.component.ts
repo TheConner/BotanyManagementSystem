@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { BMSService } from 'src/app/service/bms.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { BMSService } from 'src/app/service/bms.service';
 export class ProfileComponent implements OnInit {
   ProfileForm;
   user: any;
-  constructor(private api: BMSService, private formbuilder: FormBuilder) {}
+  constructor(private api: BMSService, private formbuilder: FormBuilder, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.api.getUser()
@@ -27,7 +27,14 @@ export class ProfileComponent implements OnInit {
   }
 
   onSubmit(userData) {
-    console.log(userData);
+    this.api.updateUser(userData).subscribe(
+      result => {
+        this.toastr.success("User Updated!");
+      },
+      error => {
+        this.toastr.error(error.error);
+      }
+    )
   }
 
 }

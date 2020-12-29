@@ -16,7 +16,7 @@ module.exports = async function (fastify, opts) {
         if (isNaN(id)) { throw 'Bad paramater' }
         // Everything is okay, continue 
         let envPromise = EnvironmentRepository.Read({id: id}, ['id', 'name', 'description']);
-        let senPromise = SensorRepository.Read({environment: id}, ['id', 'environment', 'name', 'description'])
+        let senPromise = SensorRepository.Read({environment: id}, ['id', 'environment', 'name', 'description', 'ui_color'])
         Promise.all([envPromise, senPromise])
         .then((data) => {
             // Build our environment object

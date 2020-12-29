@@ -3,6 +3,7 @@ import { BMSService } from 'src/app/service/bms.service';
 import { ToastrService } from 'ngx-toastr';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import { Sensor } from 'src/app/model/sensor.model';
 
 @Component({
   selector: 'app-configuration',
@@ -14,6 +15,7 @@ export class ConfigurationComponent implements OnInit {
   public sensData: any[];
   private envTable = "environments";
   private sensTable = "sensors";
+  public sensorModalObj: Sensor;
 
   sensorForm: FormGroup;
 
@@ -22,9 +24,10 @@ export class ConfigurationComponent implements OnInit {
   ngOnInit(): void {
     this.refreshConfig();
     this.sensorForm = new FormGroup({
-      envSelection: new FormControl('', Validators.required),
-      sensName: new FormControl('', Validators.required),
-      sensDesc: new FormControl('', Validators.required)
+      environment: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+      ui_color: new FormControl('', Validators.required)
     });
   }
 
@@ -40,20 +43,34 @@ export class ConfigurationComponent implements OnInit {
     return a.id > b.id
   }
 
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+  
+  SensorModal(content, sensor) {
+    if (sensor != null) this.sensorForm.patchValue(sensor);
+
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
+      (result) => {
       console.log('Modal closed')
       let val = this.sensorForm.value;
-      this.api.addSensor(val['envSelection'], val['sensName'], val['sensDesc'])
-      .subscribe(
-        result=>{
-          this.toastr.success('Added new sensor');
-          this.refreshConfig();
-        },
-        error => {
-          this.toastr.error('Error adding sensor: ' + error.error.text)
-        }
-      )
+
+      if (sensor == null) {
+        // We are adding new
+        this.api.addSensor(val['envSelection'], val['sensName'], val['sensDesc'])
+        .subscribe(
+          result=>{
+            this.toastr.success('Added new sensor');
+            this.refreshConfig();
+          },
+          error => {
+            this.toastr.error('Error adding sensor: ' + error.error.text)
+          }
+        )
+      } else {
+        let id = this.sensData.findIndex(s => s.id == sensor.id);
+        this.sensData[id] = Object.assign(this.sensData[id], val);
+        console.log(this.sensData)
+        this.saveSens();
+      }
+
     }, (reason) => {
       console.log('Modal Closed' + reason)
     });

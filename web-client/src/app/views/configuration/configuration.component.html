@@ -35,7 +35,7 @@
 <h2>Sensors</h2>
 <p>Sensors represent each individual type of data that can be logged by an environment. For example: the physical sensor attached to a data logging device may be able to log 2 different things like temperature and humidity, but each of those in the context of BMS represent a single sensor.</p>
 <div class="btn-group pb-2" role="group" >
-    <button class="btn btn-secondary" (click)="open(content)">Add</button>
+    <button class="btn btn-secondary" (click)="SensorModal(SensorEditorModal, null)">Add</button>
     <button class="btn btn-secondary" (click)="saveSens()">Save</button>
     <button class="btn btn-secondary" (click)="saveSens()">Delete</button>
 </div>
@@ -60,7 +60,7 @@
       <td>{{e.data_type}}</td>
       <td>{{e.data_type_name}}</td>
       <td>{{e.environment}}</td>
-      <td><button class="btn btn-outline-warning">Edit</button>
+      <td><button class="btn btn-outline-warning" (click)="SensorModal(SensorEditorModal, e)">Edit</button>
       </td>
     </tr>
   </tbody>
@@ -71,7 +71,7 @@
 
 
 <!--- MODAL SENSOR -->
-<ng-template #content let-modal>
+<ng-template #SensorEditorModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Add Sensor</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -82,17 +82,22 @@
     <form [formGroup]="sensorForm">
       <div class="form-group">
           <label>Environment</label>
-          <select class="form-control" formControlName="envSelection">
+          <select class="form-control" formControlName="environment">
             <option *ngFor="let e of envData" [value]="e.id" class="dropdown-item">{{e.id}} - {{e.name}}</option>
           </select>
       </div>
       <div class="form-group">
           <label>Sensor Name</label>
-          <input class="form-control" formControlName="sensName">
+          <input class="form-control" formControlName="name">
       </div>
       <div class="form-group">
           <label>Sensor Description</label>
-          <input class="form-control" formControlName="sensDesc" mdbInput mdbValidate>
+          <input class="form-control" formControlName="description" mdbInput mdbValidate>
+      </div>
+
+      <div class="form-group">
+        <label for="sensColor">Color to use for charts and graphics</label>
+        <input class="form-control" type="color" id="favcolor" name="favcolor" formControlName="ui_color"> 
       </div>
     </form>
   </div>
