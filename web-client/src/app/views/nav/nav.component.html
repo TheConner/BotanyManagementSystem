@@ -1,41 +1,42 @@
 <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark bg-dark">
+  <!-- Navbar brand -->
+  <mdb-navbar-brand>
+      <a class="navbar-brand" routerLink="/">
+          <img src="/assets/plant-logo.svg" style="filter: invert(100%); -webkit-filter: invert(100%);" width="32" height="32" class="d-inline-block" alt=""/>
+          BMS
+      </a>
+      
+  </mdb-navbar-brand>
 
-    <!-- Navbar brand -->
-    <mdb-navbar-brand>
-        <a class="navbar-brand" routerLink="/">
-            <img src="/assets/plant-logo.svg" style="filter: invert(100%); -webkit-filter: invert(100%);" width="32" height="32" class="d-inline-block" alt=""/>
-            BMS
-        </a>
-        
-    </mdb-navbar-brand>
-
-    <!-- Collapsible content -->
-    <links>
-        <!-- Links -->
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link waves-light" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" mdbWavesEffect>Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link waves-light" routerLink="/configuration" routerLinkActive="active" mdbWavesEffect>Configuration</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link waves-light" routerLink="/media" routerLinkActive="active" mdbWavesEffect>Media</a>
-            </li>
-        </ul>
-        <!-- Links -->
-        <ul class="navbar-nav ml-auto">
-          <li *ngIf="user != null" class="nav-item dropdown btn-group" dropdown>
-            <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
-              <img src="assets/account_circle-24px.svg" style="filter: invert(100%); -webkit-filter: invert(100%);" class="d-inline-block align-top" alt=""/> 
-              {{user.first_name}}<span class="caret"></span></a>
-            <div class="dropdown-menu dropdown-primary dropdown-menu-right" role="menu">
-              <a class="dropdown-item nav-link waves-light" routerLink="/profile">Profile</a>
-              <a class="dropdown-item nav-link waves-light">Settings</a>
-              <a class="dropdown-item nav-link waves-light">Logout</a>
-            </div>
+  <!-- Collapsible content -->
+  <links>
+      <!-- Links -->
+      <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link waves-light" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" mdbWavesEffect>Home</a>
           </li>
-        </ul>
-    </links>
-    
-  </mdb-navbar>
+          <li class="nav-item">
+            <a class="nav-link waves-light" routerLink="/configuration" routerLinkActive="active" mdbWavesEffect>Configuration</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link waves-light" routerLink="/media" routerLinkActive="active" mdbWavesEffect>Media</a>
+          </li>
+      </ul>
+      <!-- Links -->
+      <ul class="navbar-nav ml-auto">
+        <li *ngIf="user != null" class="nav-item dropdown btn-group bg-dark" dropdown>
+          <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+            <img src="assets/account_circle-24px.svg" style="filter: invert(100%); -webkit-filter: invert(100%);" class="d-inline-block align-top" alt=""/> 
+            {{user.first_name}} <span class="caret"></span>
+          </a>
+          <div class="dropdown-menu dropdown-primary dropdown-menu-right bg-dark" role="menu">
+            <a *ngIf="CurrentMode == ''" class="dropdown-item nav-link bg-dark" (click)="SetMode('darkly')">Dark Mode</a>
+            <a *ngIf="CurrentMode == 'darkly'" class="dropdown-item nav-link bg-dark" (click)="SetMode('')">Light Mode</a>
+            <a class="dropdown-item nav-link bg-dark" routerLink="/profile">Profile</a>
+            <a class="dropdown-item nav-link bg-dark">Settings</a>
+            <a class="dropdown-item nav-link bg-dark">Logout</a>
+          </div>
+        </li>
+      </ul>
+  </links>
+</mdb-navbar>

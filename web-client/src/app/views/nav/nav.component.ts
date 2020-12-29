@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { BMSService } from 'src/app/service/bms.service';
 
@@ -9,13 +9,19 @@ import { BMSService } from 'src/app/service/bms.service';
 })
 export class NavComponent implements OnInit {
   public user: any;
-  constructor(private api: BMSService) { }
+  public CurrentMode: string = '';
+  constructor(private api: BMSService, private renderer: Renderer2) { }
 
   ngOnInit(): void {
     this.api.getUser()
     .subscribe((user) => {
       this.user = user;
     })
+  }
+
+  SetMode(mode) {
+    this.CurrentMode = mode;
+    this.renderer.setAttribute(document.documentElement, 'theme', mode);
   }
 
 }
