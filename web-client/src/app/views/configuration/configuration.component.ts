@@ -18,6 +18,7 @@ export class ConfigurationComponent implements OnInit {
   public sensorModalObj: Sensor;
 
   sensorForm: FormGroup;
+  environmentForm: FormGroup;
 
   constructor(private api: BMSService, private toastr: ToastrService, private modalService: NgbModal) { }
 
@@ -28,6 +29,12 @@ export class ConfigurationComponent implements OnInit {
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       ui_color: new FormControl('', Validators.required)
+    });
+
+    this.environmentForm = new FormGroup({
+      id: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required)
     });
   }
 
@@ -69,6 +76,28 @@ export class ConfigurationComponent implements OnInit {
         this.sensData[id] = Object.assign(this.sensData[id], val);
         console.log(this.sensData)
         this.saveSens();
+      }
+
+    }, (reason) => {
+      console.log('Modal Closed' + reason)
+    });
+  }
+
+  EnvironmentModal(content, environment) {
+    if (environment != null) this.environmentForm.patchValue(environment);
+
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
+      (result) => {
+      console.log('Modal closed')
+      let val = this.environmentForm.value;
+
+      if (environment == null) {
+        // We are adding new
+        console.log("Add new environment", val);
+      } else {
+        console.log("Update existing environment", val);
+        let id = this.envData.findIndex(e => e.id == environment.id);
+        this.envData[id] = Object.assign(this.envData[id], val);
       }
 
     }, (reason) => {

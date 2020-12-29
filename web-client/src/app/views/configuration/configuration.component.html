@@ -4,9 +4,7 @@
 <h2>Environments</h2>
 <p>Environments in the context of BMS are the data logging devices that upload data to the BMS web service. Environments can be added and configured here:</p>
 <div class="btn-group pb-2" role="group" >
-    <button class="btn btn-secondary" (click)="addEnv()">Add</button>
-    <button class="btn btn-secondary" (click)="saveEnvs()">Save</button>
-    <button class="btn btn-secondary" (click)="delEnv()">Delete</button>
+    <button class="btn btn-success" (click)="EnvironmentModal(EnvironmentEditorModal, null)">Create Environment</button>
 </div>
 
 <table class="table">
@@ -23,7 +21,7 @@
       <th scope="row">{{e.id}}</th>
       <td>{{e.name}}</td>
       <td>{{e.description}}</td>
-      <td><button class="btn btn-outline-warning">Edit</button>
+      <td><button class="btn btn-outline-warning" (click)="EnvironmentModal(EnvironmentEditorModal, e)">Edit</button>
       </td>
     </tr>
   </tbody>
@@ -35,9 +33,7 @@
 <h2>Sensors</h2>
 <p>Sensors represent each individual type of data that can be logged by an environment. For example: the physical sensor attached to a data logging device may be able to log 2 different things like temperature and humidity, but each of those in the context of BMS represent a single sensor.</p>
 <div class="btn-group pb-2" role="group" >
-    <button class="btn btn-secondary" (click)="SensorModal(SensorEditorModal, null)">Add</button>
-    <button class="btn btn-secondary" (click)="saveSens()">Save</button>
-    <button class="btn btn-secondary" (click)="saveSens()">Delete</button>
+    <button class="btn btn-success" (click)="SensorModal(SensorEditorModal, null)">Create Sensor</button>
 </div>
 
 <table class="table">
@@ -102,6 +98,32 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>
+
+
+<!-- MODAL ENVIRONMENT -->
+<ng-template #EnvironmentEditorModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Environment</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="environmentForm">
+      <div class="form-group">
+          <label>Environment Name</label>
+          <input class="form-control" formControlName="name">
+      </div>
+      <div class="form-group">
+          <label>Environment Description</label>
+          <input class="form-control" formControlName="description" mdbInput mdbValidate>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Save</button>
   </div>
 </ng-template>
