@@ -13,7 +13,7 @@ function TableFormatter(rows, sensordata) {
     for (let row of rows) {
         // Extract min / max
         if (row['id_min'] < smallestID || smallestID == null) smallestID = row['id_min'];
-        if (row['id_max'] > largestID || largestID == null) largestID = row['id_max'];
+        if (row['id_max'] > largestID || largestID == null)   largestID = row['id_max'];
         
         let column = {}
         column['taken_on'] = row['taken_on']
@@ -26,6 +26,7 @@ function TableFormatter(rows, sensordata) {
 
         output.push(column);
     }
+    
     return {
         data: output,
         pagination_prev_id: smallestID,

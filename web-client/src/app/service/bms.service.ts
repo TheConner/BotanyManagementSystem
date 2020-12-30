@@ -47,6 +47,7 @@ export class BMSService {
   }
 
   public getReadingsAsTable(ids: Number[], count: Number, page:Number = 0) {
+    if (page == null) page = 0;
     let out = '';
     for (let i = 0; i < ids.length; i++) {
         out += ids[i]
