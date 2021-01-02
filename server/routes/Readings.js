@@ -2,11 +2,11 @@
 const util = require('../util');
 const XLSX = require('xlsx');
 
-const API_BASE = '/api/';
+const ENDPOINT = '/api/Readings';
 const ReadingRepository = new (require('../repository/Reading'))();
 const SensorRepository = new (require('../repository/Sensor'))();
 
-function TableFormatter(rows, sensordata) {
+function TableFormatter(rows, sensordata, count) {
     let output = []
     let largestID = undefined;
     let smallestID = undefined;
@@ -30,7 +30,8 @@ function TableFormatter(rows, sensordata) {
     return {
         data: output,
         pagination_prev_id: smallestID,
-        pagination_next_id: largestID
+        pagination_next_id: largestID,
+        count: count
     };
 }
 
@@ -61,7 +62,7 @@ function ExcelFormatter(rows, sensordata) {
 module.exports = async function (fastify, opts) {
     /// Readings entity
     // TODO: Make function less hairy
-    fastify.get(API_BASE + 'Readings', async function(request, reply) {
+    fastify.get(ENDPOINT, async function(request, reply) {
         // Get sensor query param - see if this is for one or many sensors
         if(request.query['sensors'] != null) {
             // Multiple sensors, schema is as follows:
@@ -103,13 +104,14 @@ module.exports = async function (fastify, opts) {
                     ORDER BY taken_on`,[page, limit]));
 
                 promises.push(fastify.pg.query(`SELECT id,name FROM sensors WHERE id IN (${sensor_ids_str})`))
+                promises.push(ReadingRepository.ReadCount(criteria))
                 
                 Promise.all(promises)
                 .then((data) => {
                     if (request.query['AsExcel'] == 1) {
                         return ExcelFormatter(data[0].rows, data[1].rows);
                     } else if (request.query['AsTable'] == 1) {
-                        return TableFormatter(data[0].rows, data[1].rows);
+                        return TableFormatter(data[0].rows, data[1].rows, data[2][0].count);
                     }
                     
                 })
@@ -129,5 +131,22 @@ module.exports = async function (fastify, opts) {
             // Something's fucked
             throw "Bad Request"
         }
+    })
+
+
+    /// Add new reading
+    /// TODO: Add API key integration
+    fastify.post(ENDPOINT, function(request, reply) {
+        if (request.body == null || request.body.length == 0) {
+            reply.send();
+            return;
+        }
+        ReadingRepository.Create(request.body)
+        .then((ids) => {
+            reply.send(ids.rowCount);
+        })
+        .catch((error) => {
+            reply.send(error);
+        })
     })
 }

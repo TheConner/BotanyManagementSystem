@@ -26,7 +26,7 @@ class RepositoryBase {
     }
 
     Delete(criteria) {
-        return knex(this.entity).where(criteria).del();
+        return knex(this.entity).any.del();
     }
 }
 

@@ -27,8 +27,9 @@ export class ReadingTableComponent implements OnInit {
   };
 
   public index: number;
-  public pageSize: Number = 20;
+  public pageSize: number = 20;
   public pages: Array<any>;
+  public count: number;
 
   constructor(private api: BMSService) { }
 
@@ -82,6 +83,7 @@ export class ReadingTableComponent implements OnInit {
             this.pages.push(readingTable["pagination_prev_id"])
           }
         }
+        this.count = readingTable["count"];
         console.log(this.pages);
       });
   }

@@ -11,7 +11,7 @@ class ReadingRepository extends RepositoryBase {
      * Creates a new reading repository
      */
     constructor() {
-        super('readings')
+        super('reading')
     }
 
     /**
@@ -27,6 +27,27 @@ class ReadingRepository extends RepositoryBase {
         return knex.raw(`SELECT id,taken_on,sensor,value FROM get_reading_paginated(array[${sensor_ids_str}], ?, ?)`, [page, limit]);
     }
 
+    ReadCount(criteria) {
+        return knex(this.entity).count('id').whereRaw('sensor = ANY(?)', [criteria.sensors])
+    }
+
+    /**
+     * Creates many readings
+     * @param {*} readings 
+     */
+    Create(readings) {
+        return knex.transaction((trx) => {
+            let readings_clean = [];
+            for (let reading of readings) {
+                readings_clean.push({
+                    sensor: reading.sensor,
+                    value: reading.value
+                });
+            }
+            // Sanitize input
+            return trx(this.entity).insert(readings_clean);
+        });
+    }
 
 }
 

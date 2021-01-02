@@ -36,7 +36,7 @@
     <div class="p-2">
       <button class="btn btn-primary" role="button" (click)="LoadPrevPage()" [disabled]="index==0">Previous</button>
     </div>
-    <div class="p-2">Page {{index+1}} of 10</div>
+    <div class="p-2">Page {{index+1}} of {{(count/environment.sensors.length)/pageSize}}</div>
     <div class="p-2">
       <button class="btn btn-primary" role="button" (click)="LoadNextPage()">Next</button>
     </div>
