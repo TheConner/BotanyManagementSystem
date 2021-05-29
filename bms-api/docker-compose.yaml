@@ -1,0 +1,15 @@
+version: "3"
+services:
+  bms_postgres:
+    image: 'postgres:13.1'
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: bms
+
+volumes:
+  pgdata:
