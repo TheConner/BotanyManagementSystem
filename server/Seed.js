@@ -14,6 +14,7 @@ function AddDummyUsers(ur, Users) {
     }
 }
 
+
 // DB SEEDER
 module.exports = function() {
     console.log("--- Seeding DB ---");

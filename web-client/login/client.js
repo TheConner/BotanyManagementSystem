@@ -10,13 +10,13 @@ document.addEventListener("DOMContentLoaded", function(){
         if (e.preventDefault) e.preventDefault();
         let fd = new FormData(e.target)
         
-        fetch("/api/Login", {
+        fetch("/api/v1/users/authenticate", {
             "method": "POST",
             "headers": {
                 "Content-Type": "application/json"
             },
             "body": JSON.stringify({
-                "username": fd.get("username"),
+                "email": fd.get("username"),
                 "password": fd.get("password")
             })
         })
@@ -25,12 +25,12 @@ document.addEventListener("DOMContentLoaded", function(){
                 raiseError("Bad Username or Password");
                 return null;
             } else {
-                return response.text()
+                return response.json()
             }
         })
         .then((authData) => {
             if (authData != null) {
-                localStorage.setItem('BMS-Auth', authData);
+                localStorage.setItem('BMS-Auth', authData["token"]);
                 window.location.href = '/';
             }
         })

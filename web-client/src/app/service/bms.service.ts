@@ -9,6 +9,8 @@ import { Reading } from '../model/reading.model';
 import { Image } from '../model/Image.model';
 import { AuthService } from './auth.service';
 import { UrlResolver } from '@angular/compiler';
+import { Sensor } from '../model/sensor.model';
+import { Plant } from '../model/Plant.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,11 @@ export class BMSService {
   private ENDPOINT: String;
 
   constructor(private http: HttpClient, private auth: AuthService) { 
-    this.ENDPOINT = '/api/';
+    this.ENDPOINT = '/api/v1/';
+  }
+
+  public getPlants(): Observable<Plant[]> {
+    return this.http.get<Plant[]>(this.ENDPOINT + 'plants');
   }
 
   public getEnvironments(): Observable<Environment[]> {
@@ -28,18 +34,16 @@ export class BMSService {
     return this.http.get<Environment>(this.ENDPOINT + 'environments/'+id);
   }
 
-  public addEnvironment() {
-    return this.http.post(this.ENDPOINT + 'environments',{});
+  public addEnvironment(env: Environment) {
+    return this.http.post(this.ENDPOINT + 'environments', env);
   }
 
   public delEnvironment(id: Number) {
     return this.http.delete(this.ENDPOINT + 'environments/' + id)
   }
 
-  public addSensor(id: number, name: string, desc: string) {
-    return this.http.post(this.ENDPOINT + 'sensors', {
-      env:id, name: name, desc: desc
-    })
+  public addSensor(sensor: Sensor) {
+    return this.http.post(this.ENDPOINT + 'sensors', sensor);
   }
 
   public getReading(id: Number, count:Number): Observable<Reading> {
@@ -86,7 +90,7 @@ export class BMSService {
   }
 
   public getUser(): Observable<any> {
-    return this.http.get<any>(this.ENDPOINT + 'users/session')
+    return this.http.get<any>(this.ENDPOINT + 'users')
   }
 
   public updateUser(updatedUser): Observable<any> {

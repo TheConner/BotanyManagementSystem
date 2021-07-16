@@ -12,16 +12,19 @@ module.exports = async function (fastify, opts) {
 
 
     fastify.post(API_BASE + 'sensors', async function(request, reply) {
-        let env = request.body['env'];
+        let env = request.body['environment'];
         let name = request.body['name'];
-        let desc = request.body['desc'];
+        let desc = request.body['description'];
+        let color = request.body['ui_color'];
+
         if (env == null  || name == null || desc == null)
             throw 'Bad input!'
         try {
             await SensorRepository.Create({
                 environment: env,
                 name: name,
-                description: desc
+                description: desc,
+                ui_color: color
             });
             reply.send();
         } catch (e) {

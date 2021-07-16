@@ -1,22 +1,21 @@
 version: "3"
 services:
-  app:
+  bms_api:
     build: .
     depends_on:
-      - postgres
+      - bms_postgres
     environment:
-      DATABASE_URL: postgres://user:pass@postgres:5432/bms
+      DATABASE_URL: postgres://user:pass@bms_postgres:5432/bms
       NODE_ENV: development
       PORT: 3000
     ports:
       - "3000:3000"
     volumes:
-      - .:/app/:z
+      - .:/app/
     command: bash -c "npm run migrate up && npm run dev"
 
-
-  postgres:
-    image: 'postgres:13.1'
+  bms_postgres:
+    image: 'postgres-13.3'
     ports:
       - "5432:5432"
     volumes:
@@ -25,5 +24,6 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
       POSTGRES_DB: bms
+
 volumes:
   pgdata:

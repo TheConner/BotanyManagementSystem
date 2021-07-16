@@ -21,6 +21,8 @@ import { Router } from '@angular/router';
 import { ReadingTableComponent } from './views/reading-table/reading-table.component';
 import { NavComponent } from './views/nav/nav.component';
 import { ProfileComponent } from './views/profile/profile.component';
+import { PlantsComponent } from './views/plants/plants.component';
+import { PlantComponent } from './views/plants/plant/plant.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { ProfileComponent } from './views/profile/profile.component';
     MediaComponent,
     ReadingTableComponent,
     NavComponent,
-    ProfileComponent
+    ProfileComponent,
+    PlantsComponent,
+    PlantComponent
   ],
   imports: [
     CommonModule,

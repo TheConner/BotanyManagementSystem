@@ -1,14 +1,18 @@
-import { NgModule } from '@angular/core';
+ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ConfigurationComponent } from './views/configuration/configuration.component';
 import { EnvironmentComponent } from './views/environment/environment.component';
 
 import { IndexComponent } from './views/index/index.component';
 import { MediaComponent } from './views/media/media.component';
+import { PlantComponent } from './views/plants/plant/plant.component';
+import { PlantsComponent } from './views/plants/plants.component';
 import { ProfileComponent } from './views/profile/profile.component';
 import { SensorComponent } from './views/sensor/sensor.component';
 
 const routes: Routes = [
+  { path: 'plants', component: PlantsComponent },
+  { path: 'plants/:id', component: PlantComponent },
   { path: 'profile', component: ProfileComponent, },
   { path: 'media', component: MediaComponent, },
   { path: 'configuration', component: ConfigurationComponent },

@@ -21,8 +21,8 @@ class RepositoryBase {
         return knex(this.entity).where(criteria).select(...columns);
     }
 
-    Update(criteria, newObj) {
-        return knex(this.entity).where(criteria).update(newObj);
+    Update(criteria, obj) {
+        return knex(this.entity).where(criteria).update(obj);
     }
 
     Delete(criteria) {

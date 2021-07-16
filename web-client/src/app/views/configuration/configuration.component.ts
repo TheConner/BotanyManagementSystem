@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import { Sensor } from 'src/app/model/sensor.model';
+import { Environment } from 'src/app/model/environment.model';
 
 @Component({
   selector: 'app-configuration',
@@ -58,10 +59,16 @@ export class ConfigurationComponent implements OnInit {
       (result) => {
       console.log('Modal closed')
       let val = this.sensorForm.value;
+      console.log(val);
 
       if (sensor == null) {
         // We are adding new
-        this.api.addSensor(val['envSelection'], val['sensName'], val['sensDesc'])
+        let s = new Sensor();
+        s.environment = val['environment'];
+        s.name = val['name'];
+        s.description = val['description'];
+        s.ui_color = val['ui_color'];
+        this.api.addSensor(s)
         .subscribe(
           result=>{
             this.toastr.success('Added new sensor');
@@ -94,6 +101,10 @@ export class ConfigurationComponent implements OnInit {
       if (environment == null) {
         // We are adding new
         console.log("Add new environment", val);
+        let environment = new Environment();
+        environment.name = val.name;
+        environment.description = val.description;
+        this.addEnv(environment);
       } else {
         console.log("Update existing environment", val);
         let id = this.envData.findIndex(e => e.id == environment.id);
@@ -106,8 +117,8 @@ export class ConfigurationComponent implements OnInit {
   }
 
   /// Env stuff
-  public addEnv() {
-    this.api.addEnvironment()
+  public addEnv(e: Environment) {
+    this.api.addEnvironment(e)
     .subscribe((data:any) => {
       this.refreshConfig();
     } )

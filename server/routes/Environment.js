@@ -29,11 +29,22 @@ module.exports = async function (fastify, opts) {
     fastify.post(API_BASE + 'environments', async function(request, reply) {
         // TODO Use request values, return something meaningful
         await EnvironmentRepository.Create({
-            name: '',
-            description: ''
+            name: request.body['name'],
+            description: request.body['description']
         });
         return true;
     });
+
+    fastify.patch(API_BASE + 'environments/:id', async function(request, reply) {
+        const id = parseInt(request.params['id'])
+
+        if (isNaN(id)) { throw 'Bad paramater' }
+
+        await EnvironmentRepository.Update({
+            id: id 
+        }, request.body);
+        return true;
+    })
 
     fastify.delete(API_BASE + 'environments/:id', async function(request, reply) {
         const id = parseInt(request.params['id'])

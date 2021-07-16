@@ -1,12 +1,10 @@
+import { RecordBase } from "src/RecordBase";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Environment } from "../environments/environment.entity";
 import { Reading } from "../readings/reading.entity";
 
 @Entity()
-export class Sensor {
-    @PrimaryGeneratedColumn()
-    id: number;
-
+export class Sensor extends RecordBase {
     @Column()
     name: string; 
 
