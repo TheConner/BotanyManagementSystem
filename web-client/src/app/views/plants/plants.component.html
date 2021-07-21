@@ -11,7 +11,9 @@
     </thead>
     <tbody>
         <tr *ngFor="let plant of plants">
-            <td>{{plant.name}}</td>
+            <td>
+                <a [routerLink]="'/plants/' + plant.id">{{plant.name}}</a>
+            </td>
             <td>{{plant.purchasePrice}}</td>
             <td>{{plant.created_on}}</td>
             <td>{{plant.updated_on}}</td>

@@ -62,19 +62,6 @@ export class BMSService {
     return this.http.get(this.ENDPOINT + `Readings?sensors=${out}&AsTable=1&Count=${count}&Page=${page}`);
   }
 
-  /// Config stuff
-  // Not using object modelling here, isn't needed
-  public getConfiguration() {
-    return this.http.get(this.ENDPOINT + 'Configuration');
-  }
-
-  public setConfiguration(table: String, data: any) {
-    return this.http.patch(this.ENDPOINT + 'Configuration', {
-      'table': table,
-      'data': data
-    });
-  }
-
   public getImages(EnvironmentID: Number): Observable<Image[]> {
     return this.http.get<Image[]>(this.ENDPOINT + 'Images/Environment/' + EnvironmentID)
     .pipe(map(images => {
@@ -95,6 +82,10 @@ export class BMSService {
 
   public updateUser(updatedUser): Observable<any> {
     return this.http.patch<any>(this.ENDPOINT + 'users', updatedUser);
+  }
+
+  public getPlant(plantID: number): Observable<Plant> {
+    return this.http.get<Plant>(this.ENDPOINT + 'plants/' + plantID );
   }
 
 

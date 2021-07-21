@@ -1,1 +1,72 @@
-<p>plant works!</p>
+<h1>{{plant.name}}</h1>
+
+<form>
+    <div class="form-group row">
+      <label class="col-sm-4 col-form-label">Name</label>
+      <div class="col-sm-6">
+        <input class="form-control" placeholder="Name" required
+            [(ngModel)]="plant.name" name="name">
+      </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label">Description</label>
+        <div class="col-sm-6">
+          <textarea class="form-control" placeholder="Description of the plant" required
+              [(ngModel)]="plant.description" name="description"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label">Purchase price</label>
+        <div class="col-sm-6 input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" >
+                    <fa-icon [icon]="faDollar"></fa-icon>
+                </span>  
+            </div>
+          <input class="form-control" placeholder="Purchase price of the plant" required
+              [(ngModel)]="plant.purchasePrice" name="purchasePrice">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label">Sell price</label>
+        <div class="col-sm-6 input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" >
+                    <fa-icon [icon]="faDollar"></fa-icon>
+                </span>  
+            </div>
+          <input class="form-control" placeholder="Sell price of the plant" required
+              [(ngModel)]="plant.sellPrice" name="sellPrice">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label"> Margin</label>
+        <div class="input-group col-sm-6">
+            <div class="input-group-prepend">
+                <span class="input-group-text" >
+                    <fa-icon [icon]="faCalculator"></fa-icon>
+                </span>  
+            </div>
+          <input class="form-control" placeholder="Calculated margins" required
+              [(ngModel)]="plant.margin" name="margin" readonly>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label"> Return on investment</label>
+        <div class="input-group col-sm-6">
+            <div class="input-group-prepend">
+                <span class="input-group-text" >
+                    <fa-icon [icon]="faCalculator"></fa-icon>
+                </span>  
+            </div>
+          <input class="form-control" placeholder="Calculated ROI" required
+              [(ngModel)]="plant.ROI" name="ROI" readonly>
+        </div>
+    </div>
+
+</form>

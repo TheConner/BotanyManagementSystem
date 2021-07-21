@@ -1,5 +1,4 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, Input } from '@angular/core';
-import { env } from 'process';
 import { Environment } from 'src/app/model/environment.model';
 import { Image } from 'src/app/model/Image.model';
 import { AuthService } from 'src/app/service/auth.service';

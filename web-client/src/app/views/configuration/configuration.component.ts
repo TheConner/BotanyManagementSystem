@@ -40,10 +40,9 @@ export class ConfigurationComponent implements OnInit {
   }
 
   private refreshConfig() {
-    this.api.getConfiguration()
-    .subscribe((data:any) => {
-      this.envData = data[0].sort(this.sortHelper);
-      this.sensData = data[1].sort(this.sortHelper);
+    this.api.getEnvironments()
+    .subscribe((data) => {
+      this.envData = data;
     });
   }
 
@@ -126,7 +125,7 @@ export class ConfigurationComponent implements OnInit {
 
   public saveEnvs() {
     console.log(this.envData)
-    this.api.setConfiguration(this.envTable, this.envData)
+    /*this.api.setConfiguration(this.envTable, this.envData)
     .subscribe((res: any) => {
         this.envData = res.sort(this.sortHelper);
         this.toastr.success('Environments updated!')
@@ -134,7 +133,7 @@ export class ConfigurationComponent implements OnInit {
     error => {
       console.log(error)
       this.toastr.error('ERROR: server says: ' + error.error.text)
-    })
+    })*/
   }
 
   public delEnv() {
@@ -161,6 +160,7 @@ export class ConfigurationComponent implements OnInit {
   }
 
   public saveSens() {
+    /*
     this.api.setConfiguration(this.sensTable, this.sensData)
     .subscribe((res: any) => {
         this.sensData = res.sort(this.sortHelper);
@@ -169,6 +169,6 @@ export class ConfigurationComponent implements OnInit {
     error => {
       console.log(error)
       this.toastr.error('ERROR: server says: ' + error.error.text)
-    })
+    })*/
   }
 }

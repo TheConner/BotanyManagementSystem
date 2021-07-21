@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Toast, ToastrModule } from 'ngx-toastr';
 import { ChartsModule } from 'ng2-charts';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -23,6 +23,7 @@ import { NavComponent } from './views/nav/nav.component';
 import { ProfileComponent } from './views/profile/profile.component';
 import { PlantsComponent } from './views/plants/plants.component';
 import { PlantComponent } from './views/plants/plant/plant.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,9 @@ import { PlantComponent } from './views/plants/plant/plant.component';
     ToastrModule.forRoot(),
     HttpClientModule,
     ChartsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    FontAwesomeModule
   ],
   providers: [
     {
